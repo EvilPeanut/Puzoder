@@ -1,38 +1,30 @@
 JOYPAD.addInput({
-	Keyboard: JOYPAD.KEYBOARD.W,
-	onDown: function() {
-		camera.translateZ(-0.56);
-	},
+	input: [JOYPAD.KEYBOARD.UP, JOYPAD.KEYBOARD.W],
+	holdIsDownEvent: true,
 	onHold: function() {
 		camera.translateZ(-0.56);
 	}
 });
 
 JOYPAD.addInput({
-	Keyboard: JOYPAD.KEYBOARD.S,
-	onDown: function() {
-		camera.translateZ(0.56);
-	},
+	input: [JOYPAD.KEYBOARD.DOWN, JOYPAD.KEYBOARD.S],
+	holdIsDownEvent: true,
 	onHold: function() {
 		camera.translateZ(0.56);
 	}
 });
 
 JOYPAD.addInput({
-	Keyboard: JOYPAD.KEYBOARD.A,
-	onDown: function() {
-		camera.rotation.y += 0.032;
-	},
+	input: [JOYPAD.KEYBOARD.LEFT, JOYPAD.KEYBOARD.A],
+	holdIsDownEvent: true,
 	onHold: function() {
 		camera.rotation.y += 0.032;
 	}
 });
 
 JOYPAD.addInput({
-	Keyboard: JOYPAD.KEYBOARD.D,
-	onDown: function() {
-		camera.rotation.y -= 0.032;
-	},
+	input: [JOYPAD.KEYBOARD.RIGHT, JOYPAD.KEYBOARD.D],
+	holdIsDownEvent: true,
 	onHold: function() {
 		camera.rotation.y -= 0.032;
 	}
