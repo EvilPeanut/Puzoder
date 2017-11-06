@@ -38,28 +38,38 @@ sunLight.intensity = 1;
 scene.add(sunLight);
 
 // Ground plane
-var groundPlaneGeometry = new THREE.PlaneBufferGeometry( 128, 128, 1, 1 );
+var groundPlaneTexture = new THREE.TextureLoader().load( 'img/texture/default.png' );
+groundPlaneTexture.wrapS = THREE.RepeatWrapping;
+groundPlaneTexture.wrapT = THREE.RepeatWrapping;
+groundPlaneTexture.repeat = new THREE.Vector2(16, 16);
+
+var groundPlaneMaterial = new THREE.MeshPhongMaterial( { map: groundPlaneTexture } );
+var groundPlaneGeometry = new THREE.PlaneBufferGeometry( 96, 96, 1, 1 );
 groundPlaneGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( -Math.PI / 2 ) );
-var groundPlaneMaterial = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
 var groundPlane = new THREE.Mesh( groundPlaneGeometry, groundPlaneMaterial );
 groundPlane.castShadow = false;
 groundPlane.receiveShadow = true;
 scene.add( groundPlane );
 
 // Walls
-var wallMaterial = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
-var wallGeometry = new THREE.BoxBufferGeometry( 128, 16, 1 );
+var wallTexture = new THREE.TextureLoader().load( 'img/texture/brick.jpg' );
+wallTexture.wrapS = THREE.RepeatWrapping;
+wallTexture.wrapT = THREE.RepeatWrapping;
+wallTexture.repeat.x = 5;
+
+var wallMaterial = new THREE.MeshPhongMaterial( { map: wallTexture } );
+var wallGeometry = new THREE.BoxBufferGeometry( 96, 16, 1 );
 
 var wallAMesh = new THREE.Mesh( wallGeometry, wallMaterial );
 wallAMesh.position.y = 8;
-wallAMesh.position.z = 64;
+wallAMesh.position.z = 48;
 wallAMesh.castShadow = true;
 wallAMesh.receiveShadow = true;
 scene.add( wallAMesh );
 
 var wallBMesh = new THREE.Mesh( wallGeometry, wallMaterial );
 wallBMesh.position.y = 8;
-wallBMesh.position.z = -64;
+wallBMesh.position.z = -48;
 wallBMesh.castShadow = true;
 wallBMesh.receiveShadow = true;
 scene.add( wallBMesh );
@@ -67,7 +77,7 @@ scene.add( wallBMesh );
 var wallCMesh = new THREE.Mesh( wallGeometry, wallMaterial );
 wallCMesh.applyMatrix( new THREE.Matrix4().makeRotationY( -Math.PI / 2 ) );
 wallCMesh.position.y = 8;
-wallCMesh.position.x = -64;
+wallCMesh.position.x = -48;
 wallCMesh.castShadow = true;
 wallCMesh.receiveShadow = true;
 scene.add( wallCMesh );
@@ -75,13 +85,13 @@ scene.add( wallCMesh );
 var wallDMesh = new THREE.Mesh( wallGeometry, wallMaterial );
 wallDMesh.applyMatrix( new THREE.Matrix4().makeRotationY( -Math.PI / 2 ) );
 wallDMesh.position.y = 8;
-wallDMesh.position.x = 64;
+wallDMesh.position.x = 48;
 wallDMesh.castShadow = true;
 wallDMesh.receiveShadow = true;
 scene.add( wallDMesh );
 
 // Player mesh
-var playerGeometry = new THREE.SphereGeometry( 5, 8, 8 );
+var playerGeometry = new THREE.SphereGeometry( 5, 32, 32 );
 var playerMaterial = new THREE.MeshPhongMaterial( {color: 0xffff00} );
 var playerMesh = new THREE.Mesh( playerGeometry, playerMaterial );
 playerMesh.position.y = 14;
@@ -94,6 +104,7 @@ camera.position.y += 15;
 camera.position.z += 35;
 
 function animate () {
+	playerMesh.position.copy(camera.position);
 	requestAnimationFrame( animate );
 	renderer.render(scene, camera);
 }
