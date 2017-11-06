@@ -1,4 +1,6 @@
 var scene = new THREE.Scene();
+scene.background = new THREE.Color( 0x87CEFA );
+
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 //var controls = new THREE.OrbitControls(camera);
 
@@ -8,12 +10,9 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 //TODO: Check all below are required
-var badComputer = true;
-if (!badComputer) {
-	renderer.shadowMap.enabled = true;
-	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-	renderer.shadowMapSoft = true;
-}
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMapSoft = true;
 
 // Ambient light
 var ambientLight = new THREE.AmbientLight(0xCCCCCC, 0.5);
@@ -21,18 +20,18 @@ scene.add(ambientLight);
 
 // Directional light
 var sunLight = new THREE.DirectionalLight(0xffffff);
-sunLight.position.set(2048, 2048, 2048);
+sunLight.position.set(128, 128, 128);
 sunLight.castShadow = true;
 
 sunLight.shadow.mapSize.width = 2048;
 sunLight.shadow.mapSize.height = 2048;
 
-sunLight.shadow.camera.left = -512;
-sunLight.shadow.camera.right = 512;
-sunLight.shadow.camera.bottom = -512;
-sunLight.shadow.camera.top = 512;
-sunLight.shadow.camera.near = 2048;
-sunLight.shadow.camera.far = 4096;
+sunLight.shadow.camera.left = -90;
+sunLight.shadow.camera.right = 90;
+sunLight.shadow.camera.bottom = -90;
+sunLight.shadow.camera.top = 90;
+sunLight.shadow.camera.near = 0.5;
+sunLight.shadow.camera.far = 320;
 
 sunLight.intensity = 1;
 
