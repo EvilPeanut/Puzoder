@@ -60,56 +60,32 @@ wallTexture.repeat.x = 5;
 var wallMaterial = new THREE.MeshPhongMaterial( { map: wallTexture } );
 var wallGeometry = new THREE.BoxBufferGeometry( 96, 16, 1 );
 
-var wallAMesh = new THREE.Mesh( wallGeometry, wallMaterial );
-wallAMesh.position.y = 8;
-wallAMesh.position.z = 48;
-wallAMesh.castShadow = true;
-wallAMesh.receiveShadow = true;
-scene.add( wallAMesh );
-
-var wallBMesh = new THREE.Mesh( wallGeometry, wallMaterial );
-wallBMesh.position.y = 8;
-wallBMesh.position.z = -48;
-wallBMesh.castShadow = true;
-wallBMesh.receiveShadow = true;
-scene.add( wallBMesh );
-
-var wallCMesh = new THREE.Mesh( wallGeometry, wallMaterial );
-wallCMesh.applyMatrix( new THREE.Matrix4().makeRotationY( -Math.PI / 2 ) );
-wallCMesh.position.y = 8;
-wallCMesh.position.x = -48;
-wallCMesh.castShadow = true;
-wallCMesh.receiveShadow = true;
-scene.add( wallCMesh );
-
-var wallDMesh = new THREE.Mesh( wallGeometry, wallMaterial );
-wallDMesh.applyMatrix( new THREE.Matrix4().makeRotationY( -Math.PI / 2 ) );
-wallDMesh.position.y = 8;
-wallDMesh.position.x = 48;
-wallDMesh.castShadow = true;
-wallDMesh.receiveShadow = true;
-scene.add( wallDMesh );
+var wallA = new PUZODER.Wall(new THREE.Vector3(0, 8, 48), new THREE.Vector3(96, 16, 1), 0);
+var wallB = new PUZODER.Wall(new THREE.Vector3(-30, 8, -48), new THREE.Vector3(36, 16, 1), 0);
+var wallB2 = new PUZODER.Wall(new THREE.Vector3(30, 8, -48), new THREE.Vector3(36, 16, 1), 0);
+var wallC = new PUZODER.Wall(new THREE.Vector3(-48, 8, 0), new THREE.Vector3(96, 16, 1), -Math.PI / 2);
+var wallD = new PUZODER.Wall(new THREE.Vector3(48, 8, 0), new THREE.Vector3(96, 16, 1), -Math.PI / 2);
 
 // Player mesh
 var playerGeometry = new THREE.SphereGeometry( 5, 32, 32 );
 var playerMaterial = new THREE.MeshPhongMaterial( {color: 0xffff00} );
 var playerMesh = new THREE.Mesh( playerGeometry, playerMaterial );
-playerMesh.position.y = 14;
+//playerMesh.position.y = 14;
+playerMesh.scale.y = 2.4;
 playerMesh.castShadow = true;
 playerMesh.receiveShadow = true;
-scene.add( playerMesh );
+//scene.add( playerMesh );
 
 // Default camera position
-camera.position.y += 15;
-camera.position.z += 35;
+//camera.position.y += 15;
+//camera.position.z += 35;
 
 function animate () {
-	playerMesh.position.copy(camera.position);
+	playerMesh.position.copy(controls.getObject().position);
+	//playerMesh.position.sub(new THREE.Vector3(0, 5, 0));
 	requestAnimationFrame( animate );
 	renderer.render(scene, camera);
 }
-
-animate();
 
 // Adjust viewport on window resize
 $( window ).resize(function() {
@@ -117,3 +93,62 @@ $( window ).resize(function() {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 });
+
+//
+//
+//
+var controls = new THREE.PointerLockControls( camera );
+scene.add( controls.getObject() );
+
+controls.getObject().position.set(0, 12, 35);
+
+var instructions = document.getElementById("pointerlockinstructions");//$("#pointerlockinstructions");
+var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+if ( havePointerLock ) {
+	var element = document.body;
+	var pointerlockchange = function ( event ) {
+		if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+			controls.enabled = true;
+			instructions.style.display = 'none';
+		} else {
+			controls.enabled = false;
+			instructions.style.display = 'block';
+		}
+	};
+	var pointerlockerror = function ( event ) {
+		//instructions.style.display = '';
+	};
+	// Hook pointer lock state change events
+	document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+	document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+	document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+	document.addEventListener( 'pointerlockerror', pointerlockerror, false );
+	document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
+	document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+	instructions.addEventListener( 'click', function ( event ) {
+		instructions.style.display = 'none';
+		// Ask the browser to lock the pointer
+		element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+		if ( /Firefox/i.test( navigator.userAgent ) ) {
+			var fullscreenchange = function ( event ) {
+				if ( document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element ) {
+					document.removeEventListener( 'fullscreenchange', fullscreenchange );
+					document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
+					element.requestPointerLock();
+				}
+			};
+			document.addEventListener( 'fullscreenchange', fullscreenchange, false );
+			document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+			element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+			element.requestFullscreen();
+		} else {
+			element.requestPointerLock();
+		}
+	}, false );
+} else {
+	instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+}
+//
+//
+//
+animate();
