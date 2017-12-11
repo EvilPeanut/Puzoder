@@ -1,11 +1,15 @@
+var isDebug = true;
+
+PUZODER.Rooms = [];
+
 var scene = new THREE.Scene();
 scene.background = new THREE.Color( 0x87CEFA );
 
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 3500 );
 //var controls = new THREE.OrbitControls(camera);
 
 // Renderer
-var renderer = new THREE.WebGLRenderer({ antialias: true }); //TODO: Test antialias works
+var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
@@ -37,19 +41,57 @@ sunLight.intensity = 1;
 
 scene.add(sunLight);
 
-// Ground plane
+// Ground plane texture
 var groundPlaneTexture = new THREE.TextureLoader().load( 'img/texture/default.png' );
 groundPlaneTexture.wrapS = THREE.RepeatWrapping;
 groundPlaneTexture.wrapT = THREE.RepeatWrapping;
 groundPlaneTexture.repeat = new THREE.Vector2(16, 16);
 
-var groundPlaneMaterial = new THREE.MeshPhongMaterial( { map: groundPlaneTexture } );
+// Door texture
+var doorTexture = new THREE.TextureLoader().load( 'img/texture/metal.jpg' );
+
+/*var groundPlaneMaterial = new THREE.MeshPhongMaterial( { map: groundPlaneTexture } );
 var groundPlaneGeometry = new THREE.PlaneBufferGeometry( 96, 96, 1, 1 );
 groundPlaneGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( -Math.PI / 2 ) );
 var groundPlane = new THREE.Mesh( groundPlaneGeometry, groundPlaneMaterial );
 groundPlane.castShadow = false;
 groundPlane.receiveShadow = true;
-scene.add( groundPlane );
+scene.add( groundPlane );*/
+
+// Skydome
+function loadShader(URL, name, callback) {
+	$.ajax( {
+		url: URL,
+		dataType: "text",
+		success: function ( data ) {
+			THREE.ShaderLib[ name ] = data;
+			callback();
+		}
+	} );
+}
+
+var skydome;
+
+loadShader( 'shader/default_vertex.shader', 'default_vertex', function() {
+	loadShader( 'shader/gradient_fragment.shader', 'gradient_fragment', function() {
+		skydome = new THREE.Mesh(new THREE.SphereGeometry(3300, 32, 15), 
+		    new THREE.ShaderMaterial({
+		        vertexShader: THREE.ShaderLib[ 'default_vertex' ],
+		        fragmentShader: THREE.ShaderLib[ 'gradient_fragment' ],
+		        uniforms: {
+		            topColor:    { value: new THREE.Color("#0077FF") },
+		            bottomColor: { value: new THREE.Color("#FFFFFF") },
+		            starOpacity: { value: 0.05 },
+		            offset:      { value: 33 },
+		            exponent:    { value: 0.6 }
+		        },
+		        side: THREE.BackSide
+		    })
+		);
+
+		scene.add(skydome);
+	} );
+} );
 
 // Walls
 var wallTexture = new THREE.TextureLoader().load( 'img/texture/brick.jpg' );
@@ -57,34 +99,36 @@ wallTexture.wrapS = THREE.RepeatWrapping;
 wallTexture.wrapT = THREE.RepeatWrapping;
 wallTexture.repeat.x = 5;
 
-var wallMaterial = new THREE.MeshPhongMaterial( { map: wallTexture } );
-var wallGeometry = new THREE.BoxBufferGeometry( 96, 16, 1 );
-
-var wallA = new PUZODER.Wall(new THREE.Vector3(0, 8, 48), new THREE.Vector3(96, 16, 1), 0);
+/*var wallA = new PUZODER.Wall(new THREE.Vector3(0, 8, 48), new THREE.Vector3(96, 16, 1), 0);
 var wallB = new PUZODER.Wall(new THREE.Vector3(-30, 8, -48), new THREE.Vector3(36, 16, 1), 0);
 var wallB2 = new PUZODER.Wall(new THREE.Vector3(30, 8, -48), new THREE.Vector3(36, 16, 1), 0);
 var wallC = new PUZODER.Wall(new THREE.Vector3(-48, 8, 0), new THREE.Vector3(96, 16, 1), -Math.PI / 2);
-var wallD = new PUZODER.Wall(new THREE.Vector3(48, 8, 0), new THREE.Vector3(96, 16, 1), -Math.PI / 2);
+var wallD = new PUZODER.Wall(new THREE.Vector3(48, 8, 0), new THREE.Vector3(96, 16, 1), -Math.PI / 2);*/
 
-// Player mesh
-var playerGeometry = new THREE.SphereGeometry( 5, 32, 32 );
-var playerMaterial = new THREE.MeshPhongMaterial( {color: 0xffff00} );
-var playerMesh = new THREE.Mesh( playerGeometry, playerMaterial );
-//playerMesh.position.y = 14;
-playerMesh.scale.y = 2.4;
-playerMesh.castShadow = true;
-playerMesh.receiveShadow = true;
-//scene.add( playerMesh );
+//
+//
+//
+var composer = new THREE.EffectComposer(renderer);
+composer.addPass(new THREE.RenderPass(scene, camera));
 
-// Default camera position
-//camera.position.y += 15;
-//camera.position.z += 35;
+var postProcessor = new PUZODER.PostProcessor();
+
+var blurIntensity = 0.1; //0.002
+
+postProcessor.add("horizontalBlur", THREE.HorizontalBlurShader);
+postProcessor.add("verticalBlur", THREE.VerticalBlurShader, true);
+
+postProcessor.setUniform("horizontalBlur", "h", blurIntensity);
+postProcessor.setUniform("verticalBlur", "v", blurIntensity);
+//
+//
+//
 
 function animate () {
-	playerMesh.position.copy(controls.getObject().position);
-	//playerMesh.position.sub(new THREE.Vector3(0, 5, 0));
 	requestAnimationFrame( animate );
 	renderer.render(scene, camera);
+
+	composer.render();
 }
 
 // Adjust viewport on window resize
@@ -114,6 +158,7 @@ if ( havePointerLock ) {
 			controls.enabled = false;
 			instructions.style.display = 'block';
 		}
+		JOYPAD.options.enabled = controls.enabled;
 	};
 	var pointerlockerror = function ( event ) {
 		//instructions.style.display = '';
@@ -152,3 +197,38 @@ if ( havePointerLock ) {
 //
 //
 animate();
+
+//
+//
+//
+$( "#play-button" ).click( function() { play() } );
+
+function play() {
+	unblur(350);
+	$( "#mainmenu" ).fadeOut( 400, function() {
+		$( "#pointerlockinstructions" ).fadeIn( 200 );
+	});
+}
+
+if (isDebug) {
+	play();
+}
+
+function unblur(speed) {
+	var step = blurIntensity / speed;
+
+	for (var i = 0; i < speed; i++) {
+		setTimeout(function() {
+			blurIntensity -= step;
+
+			postProcessor.setUniform("horizontalBlur", "h", blurIntensity);
+			postProcessor.setUniform("verticalBlur", "v", blurIntensity);
+		}, i);
+	}
+}
+
+//
+//
+//
+new PUZODER.StartingRoom(new THREE.Vector2(0, 0), 0);
+new PUZODER.TwoDoorRoom(new THREE.Vector2(0, -1), 2);

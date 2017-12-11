@@ -1,7 +1,7 @@
 var PUZODER = {};
 
 PUZODER.Wall = class Wall {
-	constructor(position, size, rotation) {
+	constructor(parent, position, size, rotation, texture) {
 		/*var length = from.distanceTo( to );
 
 		var rotation = from.angleTo( to );
@@ -10,7 +10,7 @@ PUZODER.Wall = class Wall {
 		position.addVectors( from, to );
 		position.multiplyScalar( 0.5 );*/
 
-		var wallMaterial = new THREE.MeshPhongMaterial( { map: wallTexture } );
+		var wallMaterial = new THREE.MeshPhongMaterial( { map: texture || wallTexture } );
 		var wallGeometry = new THREE.BoxBufferGeometry( size.x, size.y, size.z );
 
 		var wallMesh = new THREE.Mesh( wallGeometry, wallMaterial );
@@ -21,6 +21,6 @@ PUZODER.Wall = class Wall {
 		//wallMesh.applyQuaternion( rotation);
 		wallMesh.castShadow = true;
 		wallMesh.receiveShadow = true;
-		scene.add( wallMesh );
+		parent.add( wallMesh );
 	}
 }

@@ -1,1 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 body { margin: 0; overflow: hidden }
+p { user-select: none; cursor: default }
+
+.title { font-size: 64px }
+.fullscreen { position: fixed; width: 100%; height: 100% }
+.opensans-white-centered, .title, .button p, .button-disabled p { font-family: 'Open Sans'; color: white; text-align: center }
+.button, .button-disabled { position: relative; left: calc(50% - 256px); margin-bottom: 8px; width: 512px; height: 64px; border-radius: 16px }
+.button { background-color: rgba(240, 240, 240, 0.2); border: 4px solid rgba(240, 240, 240, 0.75) }
+.button-disabled { background-color: rgba(225, 225, 225, 0.1); border: 4px solid rgba(225, 225, 225, 0.4) }
+.button p, .button-disabled p { line-height: 32px }
+.button-disabled p { color: rgba(225, 225, 225, 0.4) !important }
