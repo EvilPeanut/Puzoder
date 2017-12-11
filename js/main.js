@@ -206,6 +206,7 @@ $( "#play-button" ).click( function() { play() } );
 function play() {
 	unblur(350);
 	$( "#mainmenu" ).fadeOut( 400, function() {
+		postProcessor.disable("verticalBlur");
 		$( "#pointerlockinstructions" ).fadeIn( 200 );
 	});
 }
