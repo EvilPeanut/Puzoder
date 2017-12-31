@@ -123,7 +123,7 @@ scene.add( controls.getObject() );
 
 controls.getObject().position.set(0, 12, 35);
 
-addPointerlockElement("play_button", null, function() {
+addPointerlockElement("button_play", null, function() {
 	$( "#menu_pause" ).show();
 });
 addPointerlockElement("menu_pause", function() {
@@ -137,10 +137,38 @@ animate();
 //
 //
 //
-$( "#play_button" ).click( function() { play() } );
+$( "#button_play" ).click( function() { play() } );
+$( "#button_leaderboard" ).click( function() { showLeaderboard() } );
+$( "#button_leaderboard_back" ).click( function() { hideLeaderboard() } );
+$( "#button_options" ).click( function() { showOptions() } );
+$( "#button_options_back" ).click( function() { hideOptions() } );
 
 function play() {
 	$( "#menu_main" ).fadeOut( 400 );
+}
+
+function showLeaderboard() {
+	$( "#menu_main_content_buttons" ).fadeOut( 400, function() {
+		$( "#menu_main_content_leaderboard" ).fadeIn( 400 );
+	});
+}
+
+function hideLeaderboard() {
+	$( "#menu_main_content_leaderboard" ).fadeOut( 400, function() {
+		$( "#menu_main_content_buttons" ).fadeIn( 400 );
+	});
+}
+
+function showOptions() {
+	$( "#menu_main_content_buttons" ).fadeOut( 400, function() {
+		$( "#menu_main_content_options" ).fadeIn( 400 );
+	});
+}
+
+function hideOptions() {
+	$( "#menu_main_content_options" ).fadeOut( 400, function() {
+		$( "#menu_main_content_buttons" ).fadeIn( 400 );
+	});
 }
 
 if (isDebug) {

@@ -12,14 +12,34 @@
 	<div id="menu_pause" class="fullscreen" style="display: none">
 		<p class="pointerlock_text">Paused<br><span style="font-size: 28px">Click to play</span></p>
 	</div>
+
 	<div id="menu_main">
 		<p id="menu_main_title">Puzoder</p>
 		<div id="menu_main_content" style="display: none">
-			<button id="play_button"><p>Play</p></button>
-			<button><p>Leaderboard</p></button>
-			<button><p>Options</p></button>
+			<div id="menu_main_content_buttons">
+				<button id="button_play"><p>Play</p></button>
+				<button id="button_leaderboard"><p>Leaderboard</p></button>
+				<button id="button_options"><p>Options</p></button>
+			</div>
+
+			<div id="menu_main_content_leaderboard" style="display: none">
+				<p>Leaderboard</p>
+				<p>#1 Player</p>
+				<p>#2 Player</p>
+				<p>#3 Player</p>
+				<button id="button_leaderboard_back"><p>Back</p></button>
+			</div>
+
+			<div id="menu_main_content_options" style="display: none">
+				<p>Options</p>
+				<p>Option 1</p>
+				<p>Option 2</p>
+				<p>Option 3</p>
+				<button id="button_options_back"><p>Back</p></button>
+			</div>
 		</div>
 	</div>
+
 	<script src="lib/three.js"></script>
 	<script src="lib/three-pointerlockcontrols.js"></script>
 	<script src="lib/three-orbitcontrols.js"></script>

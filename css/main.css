@@ -26,6 +26,28 @@ button p {
 }
 
 /*
+* Leaderboard and Options Elements
+*/
+#menu_main_content_leaderboard, #menu_main_content_options {
+	width: 272px;
+	height: 160px
+}
+
+#menu_main_content_leaderboard > p:first-child, #menu_main_content_options > p:first-child {
+	font-family: 'Open Sans';
+	color: #bbbbbb;
+	margin: 8px;
+	text-align: center
+}
+
+#menu_main_content_leaderboard p, #menu_main_content_options p {
+	font-family: 'Open Sans';
+	color: #5788bc;
+	margin: 4px;
+	text-align: center
+}
+
+/*
 * Pointer Lock Elements
 */
 .pointerlock_text {
