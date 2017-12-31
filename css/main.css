@@ -3,11 +3,77 @@
 body { margin: 0; overflow: hidden }
 p { user-select: none; cursor: default }
 
-.title { font-size: 64px }
 .fullscreen { position: fixed; width: 100%; height: 100% }
-.opensans-white-centered, .title, .button p, .button-disabled p { font-family: 'Open Sans'; color: white; text-align: center }
-.button, .button-disabled { position: relative; left: calc(50% - 256px); margin-bottom: 8px; width: 512px; height: 64px; border-radius: 16px }
-.button { background-color: rgba(240, 240, 240, 0.2); border: 4px solid rgba(240, 240, 240, 0.75) }
-.button-disabled { background-color: rgba(225, 225, 225, 0.1); border: 4px solid rgba(225, 225, 225, 0.4) }
-.button p, .button-disabled p { line-height: 32px }
-.button-disabled p { color: rgba(225, 225, 225, 0.4) !important }
+.opensans-white-centered, .pointerlock_text { font-family: 'Open Sans'; color: white; text-align: center }
+
+button {
+	display: block;
+	width: 256px;
+	height: 48px;
+	margin: 8px;
+	outline: none;
+	background-color: #eee;
+	border: 0px;
+	border-radius: 16px;
+	cursor: pointer
+}
+
+button p {
+	margin: 0px;
+	font-family: 'Open Sans';
+	color: #5788bc;
+	cursor: pointer
+}
+
+/*
+* Pointer Lock Elements
+*/
+.pointerlock_text {
+	position: relative;
+	float: left;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	margin: 0px;
+	font-size: 40px
+}
+
+#pointerlock_instructions {
+	background-color: rgba(0, 0, 0, 0.5)
+}
+
+/*
+* Main Menu
+*/
+#menu_main {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #dddddd
+}
+
+#menu_main_title {
+	position: relative;
+	float: left;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	margin: 0px;
+	margin-left: 6px;
+	font-family: 'Open Sans';
+	font-size: 4vw;
+	line-height: 100px;
+	background-image: linear-gradient(180deg, #bbbbbb 80%, #5889bd 70%);
+	color: transparent;
+	-webkit-background-clip: text;
+	background-clip: text
+}
+
+#menu_main_content {
+	position: absolute;
+	top: calc(50% - 53px);
+	left: calc(50% - 128px);
+	height: 176px
+}

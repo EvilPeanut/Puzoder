@@ -6,27 +6,25 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/mobile.css">
 	<script src="lib/jquery-3.2.1.js"></script>
+	<link rel="icon" href="img/favicon.png">
 </head>
 <body>
-	<div id="mainmenu" class="fullscreen">
-		<p class="title">Puzoder</p>
-		<div id="play-button" class="button"><p>Play</p></div>
-		<div class="button-disabled"><p>Level Creator</p></div>
-		<div class="button-disabled"><p>Options</p></div>
+	<div id="pointerlock_instructions" class="fullscreen">
+		<p class="pointerlock_text">Click to play</p>
 	</div>
-	<div id="pointerlockinstructions" class="fullscreen" style="display: none; background-color: rgba(0, 0, 0, 0.2)">
-		<p class="opensans-white-centered">Click the screen to play</p>
+	<div id="menu_main">
+		<p id="menu_main_title">Puzoder</p>
+		<div id="menu_main_content" style="display: none">
+			<button id="play_button"><p>Play</p></button>
+			<button><p>Leaderboard</p></button>
+			<button><p>Options</p></button>
+		</div>
 	</div>
 	<script src="lib/three.js"></script>
-	<script src="lib/three-effectcomposer.js"></script>
-	<script src="lib/three-shaderpass.js"></script>
-	<script src="lib/three-renderpass.js"></script>
-	<script src="shader/HorizontalBlurShader.js"></script>
-	<script src="shader/VerticalBlurShader.js"></script>
-	<script src="shader/copyshader.js"></script>
 	<script src="lib/three-pointerlockcontrols.js"></script>
 	<script src="lib/three-orbitcontrols.js"></script>
 	<script src="lib/joypad.js"></script>
+	<script src="js/menu_loading.js"></script>
 	<script src="js/scenery/wall.js"></script>
 	<script src="js/postprocessor.js"></script>
 	<script src="js/rooms/default-one-door.js"></script>

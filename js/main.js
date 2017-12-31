@@ -1,4 +1,4 @@
-var isDebug = true;
+var isDebug = false;
 
 PUZODER.Rooms = [];
 
@@ -99,27 +99,6 @@ wallTexture.wrapS = THREE.RepeatWrapping;
 wallTexture.wrapT = THREE.RepeatWrapping;
 wallTexture.repeat.x = 5;
 
-/*var wallA = new PUZODER.Wall(new THREE.Vector3(0, 8, 48), new THREE.Vector3(96, 16, 1), 0);
-var wallB = new PUZODER.Wall(new THREE.Vector3(-30, 8, -48), new THREE.Vector3(36, 16, 1), 0);
-var wallB2 = new PUZODER.Wall(new THREE.Vector3(30, 8, -48), new THREE.Vector3(36, 16, 1), 0);
-var wallC = new PUZODER.Wall(new THREE.Vector3(-48, 8, 0), new THREE.Vector3(96, 16, 1), -Math.PI / 2);
-var wallD = new PUZODER.Wall(new THREE.Vector3(48, 8, 0), new THREE.Vector3(96, 16, 1), -Math.PI / 2);*/
-
-//
-//
-//
-var composer = new THREE.EffectComposer(renderer);
-composer.addPass(new THREE.RenderPass(scene, camera));
-
-var postProcessor = new PUZODER.PostProcessor();
-
-var blurIntensity = 0.1; //0.002
-
-postProcessor.add("horizontalBlur", THREE.HorizontalBlurShader);
-postProcessor.add("verticalBlur", THREE.VerticalBlurShader, true);
-
-postProcessor.setUniform("horizontalBlur", "h", blurIntensity);
-postProcessor.setUniform("verticalBlur", "v", blurIntensity);
 //
 //
 //
@@ -127,8 +106,6 @@ postProcessor.setUniform("verticalBlur", "v", blurIntensity);
 function animate () {
 	requestAnimationFrame( animate );
 	renderer.render(scene, camera);
-
-	composer.render();
 }
 
 // Adjust viewport on window resize
@@ -146,7 +123,7 @@ scene.add( controls.getObject() );
 
 controls.getObject().position.set(0, 12, 35);
 
-var instructions = document.getElementById("pointerlockinstructions");//$("#pointerlockinstructions");
+var instructions = document.getElementById("pointerlock_instructions");
 var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 if ( havePointerLock ) {
 	var element = document.body;
@@ -201,31 +178,14 @@ animate();
 //
 //
 //
-$( "#play-button" ).click( function() { play() } );
+$( "#play_button" ).click( function() { play() } );
 
 function play() {
-	unblur(350);
-	$( "#mainmenu" ).fadeOut( 400, function() {
-		postProcessor.disable("verticalBlur");
-		$( "#pointerlockinstructions" ).fadeIn( 200 );
-	});
+	$( "#menu_main" ).fadeOut( 400 );
 }
 
 if (isDebug) {
 	play();
-}
-
-function unblur(speed) {
-	var step = blurIntensity / speed;
-
-	for (var i = 0; i < speed; i++) {
-		setTimeout(function() {
-			blurIntensity -= step;
-
-			postProcessor.setUniform("horizontalBlur", "h", blurIntensity);
-			postProcessor.setUniform("verticalBlur", "v", blurIntensity);
-		}, i);
-	}
 }
 
 //
