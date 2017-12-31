@@ -38,7 +38,10 @@ button p {
 	font-size: 40px
 }
 
-#pointerlock_instructions {
+/*
+* Pause Menu
+*/
+#menu_pause {
 	background-color: rgba(0, 0, 0, 0.5)
 }
 
