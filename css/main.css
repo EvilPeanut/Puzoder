@@ -26,6 +26,19 @@ button p {
 }
 
 /*
+* HUD
+*/
+#hud_crosshair {
+	position: absolute;
+	left: calc(50% - 4px);
+	top: calc(50% - 4px);
+	width: 8px;
+	height: 8px;
+	background-color: rgba(0, 0, 0, 0.25);
+	border-radius: 32px
+}
+
+/*
 * Leaderboard and Options Elements
 */
 #menu_main_content_leaderboard, #menu_main_content_options {

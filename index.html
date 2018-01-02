@@ -9,6 +9,8 @@
 	<link rel="icon" href="img/favicon.png">
 </head>
 <body>
+	<div id="hud_crosshair"></div>
+
 	<div id="menu_pause" class="fullscreen" style="display: none">
 		<p class="pointerlock_text">Paused<br><span style="font-size: 28px">Click to play</span></p>
 	</div>
@@ -44,11 +46,16 @@
 	<script src="lib/three-pointerlockcontrols.js"></script>
 	<script src="lib/three-orbitcontrols.js"></script>
 	<script src="lib/joypad.js"></script>
+	<script src="js/math.js"></script>
+	<script src="js/raycasting.js"></script>
 	<script src="js/menu_loading.js"></script>
 	<script src="js/scenery/wall.js"></script>
+	<script src="js/scenery/door.js"></script>
+	<script src="js/scenery/lever.js"></script>
 	<script src="js/postprocessor.js"></script>
 	<script src="js/rooms/default-one-door.js"></script>
 	<script src="js/rooms/default-two-door.js"></script>
+	<script src="js/rooms/default-four-door.js"></script>
 	<script src="js/rooms/misc-starting-area.js"></script>
 	<script src="js/pointerlock.js"></script>
 	<script src="js/main.js"></script>

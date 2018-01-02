@@ -1,6 +1,7 @@
-var isDebug = false;
+var isDebug = true;
 
 PUZODER.Rooms = [];
+PUZODER.Scenery = [];
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color( 0x87CEFA );
@@ -104,6 +105,12 @@ wallTexture.repeat.x = 5;
 //
 
 function animate () {
+	$( document ).trigger( 'update' );
+
+	for (var i = 0, len = PUZODER.Scenery.length; i < len; i++) {
+		PUZODER.Scenery[i].update();
+	}
+
 	requestAnimationFrame( animate );
 	renderer.render(scene, camera);
 }
@@ -173,10 +180,11 @@ function hideOptions() {
 
 if (isDebug) {
 	play();
+	$( "#menu_pause" ).show();
 }
 
 //
 //
 //
 new PUZODER.StartingRoom(new THREE.Vector2(0, 0), 0);
-new PUZODER.TwoDoorRoom(new THREE.Vector2(0, -1), 2);
+new PUZODER.FourDoorRoom(new THREE.Vector2(0, -1), 2);
