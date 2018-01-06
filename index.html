@@ -9,10 +9,24 @@
 	<link rel="icon" href="img/favicon.png">
 </head>
 <body>
+	<div id="hud_time" style="display: none"><p id="hud_time_text"></p></div>
 	<div id="hud_crosshair"></div>
 
+	<div id="menu_gameover" class="fullscreen" style="display: none">
+		<p id="menu_gameover_text">Game Over</p>
+	</div>
+
 	<div id="menu_pause" class="fullscreen" style="display: none">
-		<p class="pointerlock_text">Paused<br><span style="font-size: 28px">Click to play</span></p>
+		<p id="menu_pause_title">Puzoder</p>
+
+		<div id="menu_pause_score">
+			<img src="img/currency.png"><p id="menu_pause_score_text">0</p>
+		</div>
+
+		<div id="menu_pause_buttons">
+			<button id="button_resume"><p>Resume</p></button>
+			<button id="button_exit"><p>Exit</p></button>
+		</div>
 	</div>
 
 	<div id="menu_main">
@@ -21,7 +35,7 @@
 			<div id="menu_main_content_buttons">
 				<button id="button_play"><p>Play</p></button>
 				<button id="button_leaderboard"><p>Leaderboard</p></button>
-				<button id="button_options"><p>Options</p></button>
+				<button id="button_about"><p>About</p></button>
 			</div>
 
 			<div id="menu_main_content_leaderboard" style="display: none">
@@ -32,12 +46,12 @@
 				<button id="button_leaderboard_back"><p>Back</p></button>
 			</div>
 
-			<div id="menu_main_content_options" style="display: none">
-				<p>Options</p>
-				<p>Option 1</p>
-				<p>Option 2</p>
-				<p>Option 3</p>
-				<button id="button_options_back"><p>Back</p></button>
+			<div id="menu_main_content_about" style="display: none">
+				<p>About</p>
+				<p>Version 1.0.0</p>
+				<p>Created by Reece Aaron Lecrivain</p>
+				<p>&copy; Reece Aaron Lecrivain 2018</p>
+				<button id="button_about_back"><p>Back</p></button>
 			</div>
 		</div>
 	</div>
@@ -52,12 +66,28 @@
 	<script src="js/scenery/wall.js"></script>
 	<script src="js/scenery/door.js"></script>
 	<script src="js/scenery/lever.js"></script>
+	<script src="js/scenery/button.js"></script>
+	<script src="js/scenery/hemisphere_light.js"></script>
+	<script src="js/scenery/sign.js"></script>
+	<script src="js/scenery/cube.js"></script>
+	<script src="js/scenery/bonus_chest.js"></script>
+	<script src="js/timer.js"></script>
 	<script src="js/postprocessor.js"></script>
+	<script src="js/rooms/default-puzzle.js"></script>
 	<script src="js/rooms/default-one-door.js"></script>
 	<script src="js/rooms/default-two-door.js"></script>
+	<script src="js/rooms/default-two-door-rightangle.js"></script>
+	<script src="js/rooms/default-three-door.js"></script>
 	<script src="js/rooms/default-four-door.js"></script>
 	<script src="js/rooms/misc-starting-area.js"></script>
+	<script src="js/rooms/misc-bonus.js"></script>
+	<script src="js/rooms/puzzle-buttonlock.js"></script>
+	<script src="js/rooms/puzzle-rightangle-leverlock.js"></script>
+	<script src="js/rooms/puzzle-rightangle-cubewind.js"></script>
+	<script src="js/rooms/puzzle-threedoor-quiz-jerseyflag.js"></script>
 	<script src="js/pointerlock.js"></script>
+	<script src="js/hud.js"></script>
+	<script src="js/player.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/controls.js"></script>
 </body>

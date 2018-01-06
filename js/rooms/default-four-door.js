@@ -1,6 +1,12 @@
-PUZODER.FourDoorRoom = class {
+PUZODER.FourDoorRoom = class extends PUZODER.PuzzleRoom {
 	constructor( position, rotation ) {
-		this.object = new THREE.Object3D();
+		super();
+
+		var worldPos = new THREE.Vector3();
+		worldPos.copy( position );
+		worldPos.multiplyScalar( 96 );
+		this.object.position.set( worldPos.x, 0, worldPos.y );
+		this.object.rotation.set( 0, rotation * ( Math.PI / 2 ), 0);
 
 		this.groundPlaneMaterial = new THREE.MeshPhongMaterial( { map: groundPlaneTexture } );
 		this.groundPlaneGeometry = new THREE.PlaneBufferGeometry( 96, 96, 1, 1 );
@@ -18,10 +24,6 @@ PUZODER.FourDoorRoom = class {
 		this.westWallPartB = new PUZODER.Wall( this.object, new THREE.Vector3( -48, 8, 30 ), new THREE.Vector3( 36, 16, 1 ), -Math.PI / 2 );
 		this.eastWallPartA = new PUZODER.Wall( this.object, new THREE.Vector3( 48, 8, -30 ), new THREE.Vector3( 36, 16, 1 ), -Math.PI / 2 );
 		this.eastWallPartB = new PUZODER.Wall( this.object, new THREE.Vector3( 48, 8, 30 ), new THREE.Vector3( 36, 16, 1 ), -Math.PI / 2 );
-		
-		position.multiplyScalar(96);
-		this.object.position.set( position.x, 0, position.y );
-		this.object.rotation.set( 0, rotation * ( Math.PI / 2 ), 0);
 
 		scene.add( this.object );
 	}

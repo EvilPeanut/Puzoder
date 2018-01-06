@@ -4,7 +4,7 @@ body { margin: 0; overflow: hidden }
 p { user-select: none; cursor: default }
 
 .fullscreen { position: fixed; width: 100%; height: 100% }
-.opensans-white-centered, .pointerlock_text { font-family: 'Open Sans'; color: white; text-align: center }
+.opensans-white-centered, #hud_time p, #menu_pause_score p { font-family: 'Open Sans'; color: white; text-align: center }
 
 button {
 	display: block;
@@ -28,6 +28,21 @@ button p {
 /*
 * HUD
 */
+#hud_time {
+	position: absolute;
+	right: 32px;
+	top: 32px;
+	height: 32px;
+	width: 96px;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 16px
+}
+
+#hud_time p {
+	margin: 0;
+	margin-top: 5px
+}
+
 #hud_crosshair {
 	position: absolute;
 	left: calc(50% - 4px);
@@ -39,21 +54,21 @@ button p {
 }
 
 /*
-* Leaderboard and Options Elements
+* Leaderboard and About Elements
 */
-#menu_main_content_leaderboard, #menu_main_content_options {
+#menu_main_content_leaderboard, #menu_main_content_about {
 	width: 272px;
 	height: 160px
 }
 
-#menu_main_content_leaderboard > p:first-child, #menu_main_content_options > p:first-child {
+#menu_main_content_leaderboard > p:first-child, #menu_main_content_about > p:first-child {
 	font-family: 'Open Sans';
 	color: #bbbbbb;
 	margin: 8px;
 	text-align: center
 }
 
-#menu_main_content_leaderboard p, #menu_main_content_options p {
+#menu_main_content_leaderboard p, #menu_main_content_about p {
 	font-family: 'Open Sans';
 	color: #5788bc;
 	margin: 4px;
@@ -61,21 +76,71 @@ button p {
 }
 
 /*
-* Pointer Lock Elements
+* Game Over Menu
 */
-.pointerlock_text {
+#menu_gameover {
+	background-color: rgba(64, 0, 0, 0.5)
+}
+
+#menu_gameover_text {
 	position: relative;
 	float: left;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	margin: 0px;
-	font-size: 40px
+	margin-left: 6px;
+	font-family: 'Open Sans';
+	font-size: 4vw;
+	line-height: 100px;
+	color: white
 }
 
 /*
 * Pause Menu
 */
+#menu_pause_title {
+	position: absolute;
+	top: 64px;
+	left: 64px;
+	margin: 0;
+	font-family: 'Open Sans';
+	font-size: 62px;
+	background-image: linear-gradient(180deg, #bbbbbb 0%, #7cbcff 70%);
+	color: transparent;
+	-webkit-background-clip: text;
+	background-clip: text
+}
+
+#menu_pause_score {
+	position: absolute;
+	top: 288px;
+	left: 64px
+}
+
+#menu_pause_score img {
+	width: 16px;
+	margin-top: 2px
+}
+
+#menu_pause_score p {
+	display: inline;
+	float: right;
+	font-size: 16px;
+	margin: 0;
+	margin-left: 8px
+}
+
+#menu_pause_buttons {
+	position: absolute;
+	top: 160px;
+	left: 56px
+}
+
+#menu_pause_buttons button {
+	opacity: 0.8
+}
+
 #menu_pause {
 	background-color: rgba(0, 0, 0, 0.5)
 }

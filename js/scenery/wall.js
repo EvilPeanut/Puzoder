@@ -1,8 +1,10 @@
 var PUZODER = {};
 
-PUZODER.Wall = class Wall {
-	constructor(parent, position, size, rotation, texture) {
-		var material = new THREE.MeshPhongMaterial( { map: texture || wallTexture } );
+PUZODER.Wall = class Wall extends THREE.Object3D {
+	constructor( parent, position, size, rotation ) {
+		super();
+
+		var material = new THREE.MeshPhongMaterial( { map: size.x == 96 ? wallTexture : wallSmallTexture } );
 		var geometry = new THREE.BoxBufferGeometry( size.x, size.y, size.z );
 
 		this.mesh = new THREE.Mesh( geometry, material );
@@ -11,6 +13,19 @@ PUZODER.Wall = class Wall {
 		this.mesh.rotation.y = rotation;
 		this.mesh.castShadow = true;
 		this.mesh.receiveShadow = true;
-		parent.add( this.mesh );
+
+		this.add( this.mesh );
+
+		parent.add( this );
+
+		// Computing bounding box
+		this.boundingBox = new THREE.Box3();
+		
+		if ( isCollisionDebug ) {
+			var helper = new THREE.Box3Helper( this.boundingBox, 0xffff00 );
+			scene.add( helper );
+		}
+
+		PUZODER.Collidables.push( this );
 	}
 }

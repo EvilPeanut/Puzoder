@@ -1,23 +1,30 @@
-var isDebug = true;
+var isDebug = false;
+var isCollisionDebug = false;
 
 PUZODER.Rooms = [];
 PUZODER.Scenery = [];
+PUZODER.Collidables = [];
+
+var puzzleTimer = new PUZODER.Timer();
 
 var scene = new THREE.Scene();
-scene.background = new THREE.Color( 0x87CEFA );
-
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 3500 );
-//var controls = new THREE.OrbitControls(camera);
+
+var player = new PUZODER.Player( camera );
+player.getObject().position.set(0, 12, 0);
+scene.add( player.getObject() );
+
+// Audio listener
+var listener = new THREE.AudioListener();
+camera.add( listener );
 
 // Renderer
 var renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
-
-//TODO: Check all below are required
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.shadowMapSoft = true;
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
 
 // Ambient light
 var ambientLight = new THREE.AmbientLight(0xCCCCCC, 0.5);
@@ -43,21 +50,65 @@ sunLight.intensity = 1;
 scene.add(sunLight);
 
 // Ground plane texture
-var groundPlaneTexture = new THREE.TextureLoader().load( 'img/texture/default.png' );
+var groundPlaneTexture = new THREE.TextureLoader().load( 'img/texture/floor_grass.jpg' );
 groundPlaneTexture.wrapS = THREE.RepeatWrapping;
 groundPlaneTexture.wrapT = THREE.RepeatWrapping;
-groundPlaneTexture.repeat = new THREE.Vector2(16, 16);
+groundPlaneTexture.repeat = new THREE.Vector2(6, 6);
+
+// Wall textures
+var wallTexture = new THREE.TextureLoader().load( 'img/texture/brick.jpg' );
+wallTexture.wrapS = THREE.RepeatWrapping;
+wallTexture.wrapT = THREE.RepeatWrapping;
+wallTexture.repeat.x = 5;
+
+var wallSmallTexture = new THREE.TextureLoader().load( 'img/texture/brick.jpg' );
+wallSmallTexture.wrapS = THREE.RepeatWrapping;
+wallSmallTexture.wrapT = THREE.RepeatWrapping;
+wallSmallTexture.repeat.x = 1.875;
 
 // Door texture
 var doorTexture = new THREE.TextureLoader().load( 'img/texture/metal.jpg' );
 
-/*var groundPlaneMaterial = new THREE.MeshPhongMaterial( { map: groundPlaneTexture } );
-var groundPlaneGeometry = new THREE.PlaneBufferGeometry( 96, 96, 1, 1 );
-groundPlaneGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( -Math.PI / 2 ) );
-var groundPlane = new THREE.Mesh( groundPlaneGeometry, groundPlaneMaterial );
-groundPlane.castShadow = false;
-groundPlane.receiveShadow = true;
-scene.add( groundPlane );*/
+// Decal textures
+var decalWallDamage1Texture = new THREE.TextureLoader().load( 'img/texture/decal_wall_damage_1.png' );
+var decalWallDamage2Texture = new THREE.TextureLoader().load( 'img/texture/decal_wall_damage_2.png' );
+var decalCrack1Texture = new THREE.TextureLoader().load( 'img/texture/decal_crack_1.png' );
+var decalRust1Texture = new THREE.TextureLoader().load( 'img/texture/decal_rust_1.png' );
+
+// Sign textures
+var signTogetherTexture = new THREE.TextureLoader().load( 'img/texture/sign_together.png' );
+var signJerseyTexture = new THREE.TextureLoader().load( 'img/texture/sign_jersey.png' );
+var signSarkTexture = new THREE.TextureLoader().load( 'img/texture/sign_sark.png' );
+var signHermTexture = new THREE.TextureLoader().load( 'img/texture/sign_herm.png' );
+
+// Flag textures
+var flagJerseyTexture = new THREE.TextureLoader().load( 'img/texture/flag_jersey.png' );
+
+// Audio
+var audioLoader = new THREE.AudioLoader();
+
+var music = new THREE.Audio( listener );
+audioLoader.load( 'audio/music_shifting_sands.mp3', function( buffer ) {
+	music.setBuffer( buffer );
+	music.setLoop( true );
+	music.setVolume( 0.1 );
+	music.play();
+});
+
+var sfxFlick = new THREE.Audio( listener );
+audioLoader.load( 'audio/sfx_flick.mp3', function( buffer ) {
+	sfxFlick.setBuffer( buffer );
+});
+
+var sfxClick = new THREE.Audio( listener );
+audioLoader.load( 'audio/sfx_click.mp3', function( buffer ) {
+	sfxClick.setBuffer( buffer );
+});
+
+var sfxMagic = new THREE.Audio( listener );
+audioLoader.load( 'audio/sfx_magic.mp3', function( buffer ) {
+	sfxMagic.setBuffer( buffer );
+});
 
 // Skydome
 function loadShader(URL, name, callback) {
@@ -94,61 +145,48 @@ loadShader( 'shader/default_vertex.shader', 'default_vertex', function() {
 	} );
 } );
 
-// Walls
-var wallTexture = new THREE.TextureLoader().load( 'img/texture/brick.jpg' );
-wallTexture.wrapS = THREE.RepeatWrapping;
-wallTexture.wrapT = THREE.RepeatWrapping;
-wallTexture.repeat.x = 5;
-
 //
+// Render loop
 //
-//
-
-function animate () {
+function render () {
 	$( document ).trigger( 'update' );
 
 	for (var i = 0, len = PUZODER.Scenery.length; i < len; i++) {
 		PUZODER.Scenery[i].update();
 	}
 
-	requestAnimationFrame( animate );
-	renderer.render(scene, camera);
+	requestAnimationFrame( render );
+	renderer.render( scene, camera );
 }
 
+render();
+
+//
 // Adjust viewport on window resize
+//
 $( window ).resize(function() {
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setSize( window.innerWidth, window.innerHeight );
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 });
 
 //
-//
-//
-var controls = new THREE.PointerLockControls( camera );
-scene.add( controls.getObject() );
-
-controls.getObject().position.set(0, 12, 35);
-
-addPointerlockElement("button_play", null, function() {
-	$( "#menu_pause" ).show();
-});
-addPointerlockElement("menu_pause", function() {
-	$( "#menu_pause" ).hide();
-});
-//
-//
-//
-animate();
-
-//
-//
+// Menu functions
 //
 $( "#button_play" ).click( function() { play() } );
 $( "#button_leaderboard" ).click( function() { showLeaderboard() } );
 $( "#button_leaderboard_back" ).click( function() { hideLeaderboard() } );
-$( "#button_options" ).click( function() { showOptions() } );
-$( "#button_options_back" ).click( function() { hideOptions() } );
+$( "#button_about" ).click( function() { showAbout() } );
+$( "#button_about_back" ).click( function() { hideAbout() } );
+$( "#button_exit" ).click( function() { $( "#menu_main" ).fadeIn( 400 ) } );
+
+addPointerlockElement("button_play", null, function() {
+	$( "#menu_pause" ).show();
+});
+
+addPointerlockElement("button_resume", function() {
+	$( "#menu_pause" ).hide();
+});
 
 function play() {
 	$( "#menu_main" ).fadeOut( 400 );
@@ -166,14 +204,14 @@ function hideLeaderboard() {
 	});
 }
 
-function showOptions() {
+function showAbout() {
 	$( "#menu_main_content_buttons" ).fadeOut( 400, function() {
-		$( "#menu_main_content_options" ).fadeIn( 400 );
+		$( "#menu_main_content_about" ).fadeIn( 400 );
 	});
 }
 
-function hideOptions() {
-	$( "#menu_main_content_options" ).fadeOut( 400, function() {
+function hideAbout() {
+	$( "#menu_main_content_about" ).fadeOut( 400, function() {
 		$( "#menu_main_content_buttons" ).fadeIn( 400 );
 	});
 }
@@ -184,7 +222,34 @@ if (isDebug) {
 }
 
 //
+// Collision detection
 //
+function isColliding( position ) {
+	for ( var i = 0; i < PUZODER.Collidables.length; i++ ) {
+		if ( PUZODER.Collidables[i].boundingBox.containsPoint( position ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+//
+// Map generation
 //
 new PUZODER.StartingRoom(new THREE.Vector2(0, 0), 0);
-new PUZODER.FourDoorRoom(new THREE.Vector2(0, -1), 2);
+new PUZODER.RightAngleLeverLockRoom(new THREE.Vector2(0, -1), 0);
+new PUZODER.ButtonLockRoom(new THREE.Vector2(1, -1), 3);
+new PUZODER.RightAngleCubeWindRoom(new THREE.Vector2(2, -1), 3);
+new PUZODER.QuizJerseyFlagRoom(new THREE.Vector2(2, 0), 0);
+new PUZODER.BonusRoom(new THREE.Vector2(1, 0), 3);
+
+//player.setRoom( new THREE.Vector2(1, 0) );
+
+//
+// Compute bounding boxes
+//
+setTimeout(() => {
+	for (var i = 0; i < PUZODER.Rooms.length; i++) {
+		PUZODER.Rooms[i].computeBoundingBoxes();
+	}
+}, 2);

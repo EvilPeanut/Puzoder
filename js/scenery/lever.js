@@ -1,5 +1,5 @@
 PUZODER.Lever = class Lever extends THREE.Object3D {
-	constructor( position, rotation ) {
+	constructor( parent, position, rotation ) {
 		super();
 
 		this.boxMaterial = new THREE.MeshPhongMaterial( { color: new THREE.Color( 0xDDDDDD ) } );
@@ -22,7 +22,7 @@ PUZODER.Lever = class Lever extends THREE.Object3D {
 		this.isAnimatingDown = false;
 		this.isAnimatingUp = false;
 
-		scene.add( this );
+		parent.add( this );
 
 		PUZODER.Scenery.push( this );
 	}
@@ -33,6 +33,8 @@ PUZODER.Lever = class Lever extends THREE.Object3D {
 		} else if ( this.handleRotation == 0.5 ) {
 			this.isAnimatingUp = true;
 		}
+
+		sfxFlick.play();
 	}
 
 	update() {

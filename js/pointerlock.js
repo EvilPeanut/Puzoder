@@ -6,13 +6,13 @@ function addPointerlockElement(id, onEnable, onDisable) {
 		var element = document.body;
 		var pointerlockchange = function ( event ) {
 			if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
-				controls.enabled = true;
+				player.enabled = true;
 				if (onEnable) onEnable();
 			} else {
-				controls.enabled = false;
+				player.enabled = false;
 				if (onDisable) onDisable();
 			}
-			JOYPAD.options.enabled = controls.enabled;
+			JOYPAD.options.enabled = player.enabled;
 		};
 		var pointerlockerror = function ( event ) {
 			//TODO: Handle pointerlock error
