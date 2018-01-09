@@ -93,6 +93,8 @@ var signHermTexture = new THREE.TextureLoader().load( 'img/texture/sign_herm.png
 
 // Flag textures
 var flagJerseyTexture = new THREE.TextureLoader().load( 'img/texture/flag_jersey.png' );
+var flagSarkTexture = new THREE.TextureLoader().load( 'img/texture/flag_sark.png' );
+var flagHermTexture = new THREE.TextureLoader().load( 'img/texture/flag_herm.png' );
 
 // Audio
 var audioLoader = new THREE.AudioLoader();

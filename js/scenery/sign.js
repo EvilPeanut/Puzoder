@@ -1,8 +1,9 @@
 PUZODER.Sign = class extends THREE.Object3D {
-	constructor( parent, position, size, rotation, texture ) {
+	constructor( parent, position, size, rotation, texture, color ) {
 		super();
 
 		this.material = new THREE.MeshPhongMaterial( { map: texture, transparent: true } );
+		this.material.color = color || new THREE.Color( 0xFFFFFF );
 		this.geometry = new THREE.PlaneBufferGeometry( size.x, size.y, 1, 1 );
 		this.mesh = new THREE.Mesh( this.geometry, this.material );
 		this.mesh.castShadow = false;
