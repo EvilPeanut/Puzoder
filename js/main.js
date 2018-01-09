@@ -87,6 +87,7 @@ var flagJerseyTexture = new THREE.TextureLoader().load( 'img/texture/flag_jersey
 // Audio
 var audioLoader = new THREE.AudioLoader();
 
+// Music obtained from http://www.purple-planet.com
 var music = new THREE.Audio( listener );
 audioLoader.load( 'audio/music_shifting_sands.mp3', function( buffer ) {
 	music.setBuffer( buffer );
@@ -95,6 +96,7 @@ audioLoader.load( 'audio/music_shifting_sands.mp3', function( buffer ) {
 	music.play();
 });
 
+// Sound effects obtained from https://www.zapsplat.com
 var sfxFlick = new THREE.Audio( listener );
 audioLoader.load( 'audio/sfx_flick.mp3', function( buffer ) {
 	sfxFlick.setBuffer( buffer );
