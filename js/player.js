@@ -2,13 +2,13 @@ PUZODER.Player = class Player extends THREE.PointerLockControls {
 	constructor( camera ) {
 		super( camera );
 
-		this.currentRoom = this.getRoom( this.getObject().position );
+		this.currentRoom = this.getRoom();
 		this.puzzlesCompleted = 0;
 		this.score = 0;
 		this.timeLeftModifier = 1;
 
 		$( document ).on( 'update', () => {
-			var newRoom = this.getRoom( this.getObject().position );
+			var newRoom = this.getRoom();
 
 			if ( !this.currentRoom.equals( newRoom ) ) {
 				// Turn off lights in old room
@@ -47,6 +47,8 @@ PUZODER.Player = class Player extends THREE.PointerLockControls {
 								}
 								
 								puzzleTimer.start();
+							} else {
+								puzzleTimer.stop();
 							}
 
 							HUD.setTime( this.room.timeLeft );
@@ -69,11 +71,8 @@ PUZODER.Player = class Player extends THREE.PointerLockControls {
 		});
 	}
 
-	getRoom( position ) {
-		var roomX = Math.floor( ( position.x + 48 ) / 96 );
-		var roomZ = Math.floor( ( position.z + 48 ) / 96 );
-
-		return new THREE.Vector2( roomX, roomZ );
+	getRoom() {
+		return getRoom( this.getObject().position );
 	}
 
 	setRoom( roomPosition ) {

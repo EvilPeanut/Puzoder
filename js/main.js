@@ -1,4 +1,4 @@
-var isDebug = false;
+var isDebug = true;
 var isCollisionDebug = false;
 
 PUZODER.Rooms = [];
@@ -154,7 +154,7 @@ function render () {
 	$( document ).trigger( 'update' );
 
 	for (var i = 0, len = PUZODER.Scenery.length; i < len; i++) {
-		PUZODER.Scenery[i].update();
+		if ( PUZODER.Scenery[i].update ) PUZODER.Scenery[i].update();
 	}
 
 	requestAnimationFrame( render );
@@ -221,6 +221,16 @@ function hideAbout() {
 if (isDebug) {
 	play();
 	$( "#menu_pause" ).show();
+}
+
+//
+// Return the co-ordinates of the room the vector is in
+//
+function getRoom( position ) {
+	var roomX = Math.floor( ( position.x + 48 ) / 96 );
+	var roomZ = Math.floor( ( position.z + 48 ) / 96 );
+
+	return new THREE.Vector2( roomX, roomZ );
 }
 
 //

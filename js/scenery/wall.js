@@ -27,5 +27,6 @@ PUZODER.Wall = class Wall extends THREE.Object3D {
 		}
 
 		PUZODER.Collidables.push( this );
+		PUZODER.Scenery.push( this );
 	}
 }
