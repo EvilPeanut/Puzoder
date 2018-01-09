@@ -1,7 +1,8 @@
-var isDebug = false;
+var isDebug = true;
 var isCollisionDebug = false;
 
 PUZODER.Rooms = [];
+PUZODER.RoomTemplates = [];
 PUZODER.Scenery = [];
 PUZODER.Collidables = [];
 
@@ -11,8 +12,17 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 3500 );
 
 var player = new PUZODER.Player( camera );
-player.getObject().position.set(0, 12, 0);
+player.getObject().position.set( 0, 12, 0 );
+player.getObject().rotation.y = Math.PI;
 scene.add( player.getObject() );
+
+// Direction enum
+PUZODER.Direction = {
+	NORTH: 0,
+	EAST: 1,
+	SOUTH: 2,
+	WEST: 3
+}
 
 // Audio listener
 var listener = new THREE.AudioListener();
@@ -87,6 +97,7 @@ var flagJerseyTexture = new THREE.TextureLoader().load( 'img/texture/flag_jersey
 // Audio
 var audioLoader = new THREE.AudioLoader();
 
+// Music obtained from http://www.purple-planet.com
 var music = new THREE.Audio( listener );
 audioLoader.load( 'audio/music_shifting_sands.mp3', function( buffer ) {
 	music.setBuffer( buffer );
@@ -95,6 +106,7 @@ audioLoader.load( 'audio/music_shifting_sands.mp3', function( buffer ) {
 	music.play();
 });
 
+// Sound effects obtained from https://www.zapsplat.com
 var sfxFlick = new THREE.Audio( listener );
 audioLoader.load( 'audio/sfx_flick.mp3', function( buffer ) {
 	sfxFlick.setBuffer( buffer );
@@ -141,7 +153,7 @@ loadShader( 'shader/default_vertex.shader', 'default_vertex', function() {
 		    })
 		);
 
-		scene.add(skydome);
+		scene.add( skydome );
 	} );
 } );
 
@@ -152,8 +164,10 @@ function render () {
 	$( document ).trigger( 'update' );
 
 	for (var i = 0, len = PUZODER.Scenery.length; i < len; i++) {
-		PUZODER.Scenery[i].update();
+		if ( PUZODER.Scenery[i].update ) PUZODER.Scenery[i].update();
 	}
+
+	if ( skydome ) skydome.position.copy( player.getObject().position );
 
 	requestAnimationFrame( render );
 	renderer.render( scene, camera );
@@ -222,6 +236,16 @@ if (isDebug) {
 }
 
 //
+// Return the co-ordinates of the room the vector is in
+//
+function getRoom( position ) {
+	var roomX = Math.floor( ( position.x + 48 ) / 96 );
+	var roomZ = Math.floor( ( position.z + 48 ) / 96 );
+
+	return new THREE.Vector2( roomX, roomZ );
+}
+
+//
 // Collision detection
 //
 function isColliding( position ) {
@@ -236,20 +260,27 @@ function isColliding( position ) {
 //
 // Map generation
 //
-new PUZODER.StartingRoom(new THREE.Vector2(0, 0), 0);
-new PUZODER.RightAngleLeverLockRoom(new THREE.Vector2(0, -1), 0);
-new PUZODER.ButtonLockRoom(new THREE.Vector2(1, -1), 3);
-new PUZODER.RightAngleCubeWindRoom(new THREE.Vector2(2, -1), 3);
-new PUZODER.QuizJerseyFlagRoom(new THREE.Vector2(2, 0), 0);
-new PUZODER.BonusRoom(new THREE.Vector2(1, 0), 3);
+function rotateDirection( direction, rotation ) {
+	return ( direction + rotation ) % 4;
+}
 
-//player.setRoom( new THREE.Vector2(1, 0) );
+function isRoomPositionTaken( position ) {
+	for ( var i = 0; i < PUZODER.Rooms.length; i++ ) {
+		var room = PUZODER.Rooms[i];
 
-//
-// Compute bounding boxes
-//
-setTimeout(() => {
-	for (var i = 0; i < PUZODER.Rooms.length; i++) {
-		PUZODER.Rooms[i].computeBoundingBoxes();
+		if ( room.position.equals( position ) ) {
+			return true;
+		}
 	}
-}, 2);
+
+	return false;
+}
+
+setTimeout(() => {
+	var startingRoom = new PUZODER.StartingRoom(new THREE.Vector2(0, 0), 0);
+	startingRoom.addToScene();
+	//var testRoom = new PUZODER.ButtonLockRoom(new THREE.Vector2(0, 0), 0);
+	//testRoom.addToScene();
+}, 100);
+
+//player.setRoom( new THREE.Vector2(1, 1) );

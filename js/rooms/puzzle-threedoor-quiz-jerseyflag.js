@@ -2,6 +2,14 @@ PUZODER.QuizJerseyFlagRoom = class extends PUZODER.ThreeDoorRoom {
 	constructor( position, rotation ) {
 		super( position, rotation );
 
+		/*
+		* TODO: Add bonus room generation
+		var exitOrientation = this.exits[1];
+		var bonusRoom = new PUZODER.BonusRoom( this.getRoomToDirection( exitOrientation ), 0 );
+		bonusRoom.setRotation( exitOrientation );
+		bonusRoom.addToScene();
+		*/
+
 		this.timeLeft = 30;
 		this.score = 2;
 
@@ -37,8 +45,7 @@ PUZODER.QuizJerseyFlagRoom = class extends PUZODER.ThreeDoorRoom {
 			this.setCompleted( true );
 			this.door.open();
 		}
-
-		this.position = position;
-		PUZODER.Rooms.push( this );
 	}
 }
+
+PUZODER.RoomTemplates.push( PUZODER.QuizJerseyFlagRoom );

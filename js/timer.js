@@ -16,8 +16,10 @@ PUZODER.Timer = class Timer {
 
 	tick() {
 		setTimeout(() => {
-			if (this.enabled) this.tick();
-			this.onTick();
+			if ( this.enabled ) {
+				this.tick();
+				this.onTick();
+			}
 		}, this.interval);
 	}
 }

@@ -1,30 +1,17 @@
 PUZODER.TwoDoorRoom = class extends PUZODER.PuzzleRoom {
 	constructor( position, rotation ) {
-		super();
+		super( position, rotation );
 
-		var worldPos = new THREE.Vector3();
-		worldPos.copy( position );
-		worldPos.multiplyScalar( 96 );
-		this.object.position.set( worldPos.x, 0, worldPos.y );
-		this.object.rotation.set( 0, rotation * ( Math.PI / 2 ), 0);
+		this.entrance = PUZODER.Direction.SOUTH;
+		this.exits = [ PUZODER.Direction.NORTH ];
 
-		this.groundPlaneMaterial = new THREE.MeshPhongMaterial( { map: groundPlaneTexture } );
-		this.groundPlaneGeometry = new THREE.PlaneBufferGeometry( 96, 96, 1, 1 );
-		this.groundPlaneGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( -Math.PI / 2 ) );
-		this.groundPlane = new THREE.Mesh( this.groundPlaneGeometry, this.groundPlaneMaterial );
-		this.groundPlane.castShadow = false;
-		this.groundPlane.receiveShadow = true;
-		this.object.add( this.groundPlane );
+		super.generateFloor();
 
-		this.southWallPartA = new PUZODER.Wall( this.object, new THREE.Vector3( -30, 8, 48 ), new THREE.Vector3( 36, 16, 1 ), 0 );
-		this.southWallPartB = new PUZODER.Wall( this.object, new THREE.Vector3( 30, 8, 48 ), new THREE.Vector3( 36, 16, 1 ), 0 );
-		this.northWallPartA = new PUZODER.Wall( this.object, new THREE.Vector3( -30, 8, -48 ), new THREE.Vector3( 36, 16, 1 ), 0 );
-		this.northWallPartB = new PUZODER.Wall( this.object, new THREE.Vector3( 30, 8, -48 ), new THREE.Vector3( 36, 16, 1 ), 0 );
-		this.westWall = new PUZODER.Wall( this.object, new THREE.Vector3( -48, 8, 0 ), new THREE.Vector3( 96, 16, 1 ), -Math.PI / 2 );
-		this.eastWall = new PUZODER.Wall( this.object, new THREE.Vector3( 48, 8, 0 ), new THREE.Vector3( 96, 16, 1 ), -Math.PI / 2 );
+		super.generateWall( PUZODER.Direction.NORTH, true );
+		super.generateWall( PUZODER.Direction.EAST );
+		super.generateWall( PUZODER.Direction.SOUTH, true );
+		super.generateWall( PUZODER.Direction.WEST );
 
-		scene.add( this.object );
+		super.completeGeneration();
 	}
 }
-
-//PUZODER.Rooms[ 'DefaultRoom' ] = PUZODER.DefaultRoom;

@@ -21,6 +21,9 @@ PUZODER.Door = class Door extends THREE.Object3D {
 		} else if (rotation == 1) {
 			this.lightLeft = new PUZODER.HemisphereLight( parent, new THREE.Vector3( position.x + 0.55, position.y + 6, position.z - 14 ), rotation );
 			this.lightRight = new PUZODER.HemisphereLight( parent, new THREE.Vector3( position.x + 0.55, position.y + 6, position.z + 14 ), rotation );
+		} else if ( rotation == 2 ) {
+			this.lightLeft = new PUZODER.HemisphereLight( parent, new THREE.Vector3( position.x - 14, position.y + 6, position.z - 0.55 ), rotation );
+			this.lightRight = new PUZODER.HemisphereLight( parent, new THREE.Vector3( position.x + 14, position.y + 6, position.z - 0.55 ), rotation );
 		} else if (rotation == 3) {
 			this.lightLeft = new PUZODER.HemisphereLight( parent, new THREE.Vector3( position.x - 0.55, position.y + 6, position.z - 14 ), rotation );
 			this.lightRight = new PUZODER.HemisphereLight( parent, new THREE.Vector3( position.x - 0.55, position.y + 6, position.z + 14 ), rotation );

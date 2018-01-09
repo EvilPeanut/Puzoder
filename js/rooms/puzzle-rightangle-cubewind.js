@@ -33,9 +33,6 @@ PUZODER.RightAngleCubeWindRoom = class extends PUZODER.TwoDoorRightAngleRoom {
 			this.cube3.nextColor();
 			this.checkSolution();
 		}
-
-		this.position = position;
-		PUZODER.Rooms.push( this );
 	}
 
 	checkSolution() {
@@ -48,3 +45,5 @@ PUZODER.RightAngleCubeWindRoom = class extends PUZODER.TwoDoorRightAngleRoom {
 		}
 	}
 }
+
+PUZODER.RoomTemplates.push( PUZODER.RightAngleCubeWindRoom );

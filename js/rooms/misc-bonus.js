@@ -6,7 +6,6 @@ PUZODER.BonusRoom = class extends PUZODER.OneDoorRoom {
 
 		this.decal1 = new PUZODER.Sign( this.object, new THREE.Vector3( 24, 10, -47.45 ), new THREE.Vector2( 16, 8 ), 0, decalCrack1Texture );
 
-		this.position = position;
 		PUZODER.Rooms.push( this );
 	}
 }

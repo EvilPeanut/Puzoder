@@ -22,9 +22,6 @@ PUZODER.RightAngleLeverLockRoom = class extends PUZODER.TwoDoorRightAngleRoom {
 		this.lightLeverRight = new PUZODER.HemisphereLight( this.object, new THREE.Vector3( -47.45, 12, -8 ), 1 );
 
 		this.number = 0;
-
-		this.position = position;
-		PUZODER.Rooms.push( this );
 	}
 
 	checkSolution() {
@@ -41,3 +38,5 @@ PUZODER.RightAngleLeverLockRoom = class extends PUZODER.TwoDoorRightAngleRoom {
 		}
 	}
 }
+
+PUZODER.RoomTemplates.push( PUZODER.RightAngleLeverLockRoom );
