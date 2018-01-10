@@ -14,6 +14,7 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 var player = new PUZODER.Player( camera );
 player.getObject().position.set( 0, 12, 0 );
 player.getObject().rotation.y = Math.PI;
+player.getObject().dontDestroy = true;
 scene.add( player.getObject() );
 
 // Direction enum
@@ -38,6 +39,7 @@ document.body.appendChild( renderer.domElement );
 
 // Ambient light
 var ambientLight = new THREE.AmbientLight(0xCCCCCC, 0.5);
+ambientLight.dontDestroy = true;
 scene.add(ambientLight);
 
 // Directional light
@@ -56,6 +58,8 @@ sunLight.shadow.camera.near = 0.5;
 sunLight.shadow.camera.far = 320;
 
 sunLight.intensity = 1;
+
+sunLight.dontDestroy = true;
 
 scene.add(sunLight);
 
@@ -155,6 +159,8 @@ loadShader( 'shader/default_vertex.shader', 'default_vertex', function() {
 		    })
 		);
 
+		skydome.dontDestroy = true;
+
 		scene.add( skydome );
 	} );
 } );
@@ -212,6 +218,12 @@ addPointerlockElement("button_resume", function() {
 });
 
 function play() {
+	if ( player.isDead ) {
+		resetMap();
+		player.isDead = false;
+		$( "#menu_gameover" ).hide();
+	}
+
 	if ( player.room && !player.room.isCompleted ) puzzleTimer.start();
 	$( "#menu_main" ).fadeOut( 400 );
 }
@@ -245,6 +257,31 @@ function hideAbout() {
 if (isDebug) {
 	play();
 	$( "#menu_pause" ).show();
+}
+
+//
+// Reset the map
+//
+function resetMap() {
+	for ( var i = 0; i < scene.children.length; i++ ) {
+		if ( !scene.children[i].dontDestroy ) scene.remove( scene.children[i] );
+	}
+
+	PUZODER.Rooms = [];
+	PUZODER.Scenery = [];
+	PUZODER.Collidables = [];
+
+	if ( scene.children.length > 4 ) {
+		resetMap();
+	} else {
+		setTimeout(() => {
+			var startingRoom = new PUZODER.StartingRoom(new THREE.Vector2(0, 0), 0);
+			startingRoom.addToScene();
+
+			player.getObject().position.set( 0, 12, 0 );
+			player.getObject().rotation.y = Math.PI;
+		}, 100);
+	}
 }
 
 //
