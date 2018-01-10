@@ -6,8 +6,8 @@ PUZODER.Timer = class Timer {
 	}
 
 	start() {
+		if ( !this.enabled ) this.tick();
 		this.enabled = true;
-		this.tick();
 	}
 
 	stop() {

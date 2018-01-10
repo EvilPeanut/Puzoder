@@ -25,7 +25,13 @@ PUZODER.Cube = class Cube extends THREE.Object3D {
 	}
 
 	nextColor() {
-		var index = this.colors.indexOf( this.boxMaterial.color );
+		var index;
+
+		for ( var i = 0; i < this.colors.length; i++ ) {
+			if ( this.colors[i].equals( this.boxMaterial.color ) ) {
+				index = i;
+			}
+		}
 
 		if (index == this.colors.length - 1) {
 			this.boxMaterial.color = this.colors[ 0 ];

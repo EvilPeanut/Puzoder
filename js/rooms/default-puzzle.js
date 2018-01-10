@@ -172,8 +172,6 @@ PUZODER.PuzzleRoom = class {
 
 			puzzleTimer.start();
 		}
-
-		$( "#menu_pause_score_text" ).text( player.score );
 	}
 
 	computeBoundingBoxes() {

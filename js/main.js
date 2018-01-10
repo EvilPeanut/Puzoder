@@ -223,6 +223,7 @@ $( "#button_submit_score" ).click( function() {
 } );
 
 addPointerlockElement("button_play", null, function() {
+	$( "#menu_pause_score_text" ).text( player.score );
 	$( "#menu_pause" ).show();
 	puzzleTimer.stop();
 });
@@ -235,11 +236,16 @@ addPointerlockElement("button_resume", function() {
 function play() {
 	if ( player.isDead ) {
 		resetMap();
+
 		player.isDead = false;
+		player.puzzlesCompleted = 0;
+		player.score = 0;
+
 		$( "#menu_gameover" ).hide();
+	} else {
+		if ( player.room && !player.room.isCompleted ) puzzleTimer.start();
 	}
 
-	if ( player.room && !player.room.isCompleted ) puzzleTimer.start();
 	$( "#menu_main" ).fadeOut( 400 );
 }
 
@@ -343,8 +349,4 @@ function isRoomPositionTaken( position ) {
 setTimeout(() => {
 	var startingRoom = new PUZODER.StartingRoom(new THREE.Vector2(0, 0), 0);
 	startingRoom.addToScene();
-	//var testRoom = new PUZODER.ButtonLockRoom(new THREE.Vector2(0, 0), 0);
-	//testRoom.addToScene();
 }, 100);
-
-//player.setRoom( new THREE.Vector2(1, 1) );
