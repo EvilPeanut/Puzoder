@@ -1,4 +1,4 @@
-var isDebug = true;
+var isDebug = false;
 var isCollisionDebug = false;
 
 PUZODER.Rooms = [];
@@ -194,21 +194,31 @@ $( "#button_leaderboard" ).click( function() { showLeaderboard() } );
 $( "#button_leaderboard_back" ).click( function() { hideLeaderboard() } );
 $( "#button_about" ).click( function() { showAbout() } );
 $( "#button_about_back" ).click( function() { hideAbout() } );
-$( "#button_exit" ).click( function() { $( "#menu_main" ).fadeIn( 400 ) } );
+$( "#button_exit" ).click( function() { puzzleTimer.stop(); $( "#menu_main" ).fadeIn( 400 ) } );
+$( "#button_submit_score" ).click( function() {
+	$( "#menu_pause" ).hide();
+	$( "#menu_main" ).fadeIn( 400 );
+	connection.send( JSON.stringify( { type: '1', player: $( "#menu_gameover_playername" ).val(), score: player.score } ) );
+} );
 
 addPointerlockElement("button_play", null, function() {
 	$( "#menu_pause" ).show();
+	puzzleTimer.stop();
 });
 
 addPointerlockElement("button_resume", function() {
+	if ( player.room && !player.room.isCompleted ) puzzleTimer.start();
 	$( "#menu_pause" ).hide();
 });
 
 function play() {
+	if ( player.room && !player.room.isCompleted ) puzzleTimer.start();
 	$( "#menu_main" ).fadeOut( 400 );
 }
 
 function showLeaderboard() {
+	getLeaderboard();
+
 	$( "#menu_main_content_buttons" ).fadeOut( 400, function() {
 		$( "#menu_main_content_leaderboard" ).fadeIn( 400 );
 	});

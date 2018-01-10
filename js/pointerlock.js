@@ -5,6 +5,7 @@ function addPointerlockElement(id, onEnable, onDisable) {
 	if ( havePointerLock ) {
 		var element = document.body;
 		var pointerlockchange = function ( event ) {
+			if ( player.isDead ) return;
 			if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
 				player.enabled = true;
 				if (onEnable) onEnable();
@@ -47,4 +48,9 @@ function addPointerlockElement(id, onEnable, onDisable) {
 		//TODO: Don't do check here
 		pointerlockElement.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 	}
+}
+
+function releasePointerlock() {
+	document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock;
+	document.exitPointerLock();
 }

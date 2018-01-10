@@ -7,6 +7,7 @@ PUZODER.Player = class Player extends THREE.PointerLockControls {
 		this.puzzlesCompleted = 0;
 		this.score = 0;
 		this.timeLeftModifier = 1;
+		this.isDead = false;
 
 		$( document ).on( 'update', () => {
 			var newRoom = this.getRoom();
@@ -40,10 +41,12 @@ PUZODER.Player = class Player extends THREE.PointerLockControls {
 									HUD.setTime( this.room.timeLeft );
 
 									if ( this.room.timeLeft == 0 ) {
+										$( "#menu_gameover_score_text" ).html("Your score:&emsp;&emsp; " + this.score);
 										$( "#menu_gameover" ).fadeIn( 400 );
 										HUD.hideTime();
 										player.enabled = false;
-										//TODO: Release pointer lock
+										this.isDead = true;
+										releasePointerlock();
 									}
 								}
 								

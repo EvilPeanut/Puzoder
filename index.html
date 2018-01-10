@@ -13,7 +13,12 @@
 	<div id="hud_crosshair"></div>
 
 	<div id="menu_gameover" class="fullscreen" style="display: none">
-		<p id="menu_gameover_text">Game Over</p>
+		<div id="menu_gameover_content">
+			<p id="menu_gameover_text">Game Over</p>
+			<img src="img/currency.png"><p id="menu_gameover_score_text">Your score:&emsp;&emsp; 0</p>
+			<p class="opensans-white-centered">Player name<input id="menu_gameover_playername" type="text" style="margin-left: 16px"></p>
+			<button id="button_submit_score"><p>Submit Score</p></button>
+		</div>
 	</div>
 
 	<div id="menu_pause" class="fullscreen" style="display: none">
@@ -40,9 +45,9 @@
 
 			<div id="menu_main_content_leaderboard" style="display: none">
 				<p>Leaderboard</p>
-				<p>#1 Player</p>
-				<p>#2 Player</p>
-				<p>#3 Player</p>
+				<p id="leaderboard_player_1">#1 Player <img src="img/currency.png"> 0</p>
+				<p id="leaderboard_player_2">#2 Player <img src="img/currency.png"> 0</p>
+				<p id="leaderboard_player_3">#3 Player <img src="img/currency.png"> 0</p>
 				<button id="button_leaderboard_back"><p>Back</p></button>
 			</div>
 
@@ -92,5 +97,6 @@
 	<script src="js/rooms/puzzle-rightangle-cubewind.js"></script>
 	<script src="js/rooms/puzzle-threedoor-quiz-jerseyflag.js"></script>
 	<script src="js/controls.js"></script>
+	<script src="js/connection.js"></script>
 </body>
 </html>
