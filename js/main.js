@@ -91,6 +91,8 @@ var decalRust1Texture = new THREE.TextureLoader().load( 'img/texture/decal_rust_
 
 // Sign textures
 var signTogetherTexture = new THREE.TextureLoader().load( 'img/texture/sign_together.png' );
+var signFastTexture = new THREE.TextureLoader().load( 'img/texture/sign_fast.png' );
+var signHueTexture = new THREE.TextureLoader().load( 'img/texture/sign_hue.png' );
 var signJerseyTexture = new THREE.TextureLoader().load( 'img/texture/sign_jersey.png' );
 var signSarkTexture = new THREE.TextureLoader().load( 'img/texture/sign_sark.png' );
 var signHermTexture = new THREE.TextureLoader().load( 'img/texture/sign_herm.png' );
