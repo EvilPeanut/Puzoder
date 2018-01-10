@@ -136,6 +136,8 @@ PUZODER.PuzzleRoom = class {
 	addToScene() {
 		scene.add( this.object );
 		PUZODER.Rooms.push( this );
+
+		if ( this.onGenerate ) this.onGenerate();
 	}
 
 	setRotation( rotation ) {

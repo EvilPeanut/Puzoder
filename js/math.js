@@ -32,7 +32,11 @@ Math.pingPong = function(t, length) {
 }
 
 Math.randomRange = function(min, max) {
-	return Math.floor(Math.random() * ((Math.abs(min) + max) + 1)) - Math.abs(min);
+	if (min >= 0) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	} else {
+		return Math.floor(Math.random() * ((Math.abs(min) + max) + 1)) - Math.abs(min);
+	}
 }
 
 Math.lerp = function (a, b, n) {

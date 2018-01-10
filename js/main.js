@@ -63,44 +63,57 @@ sunLight.dontDestroy = true;
 
 scene.add(sunLight);
 
+// Texture loader
+var textureLoader = new THREE.TextureLoader();
+function loadTexture(name) {
+	return textureLoader.load( 'img/texture/' + name );
+}
+
 // Ground plane texture
-var groundPlaneTexture = new THREE.TextureLoader().load( 'img/texture/floor_grass.jpg' );
+var groundPlaneTexture = loadTexture( 'floor_grass.jpg' );
 groundPlaneTexture.wrapS = THREE.RepeatWrapping;
 groundPlaneTexture.wrapT = THREE.RepeatWrapping;
 groundPlaneTexture.repeat = new THREE.Vector2(6, 6);
 
 // Wall textures
-var wallTexture = new THREE.TextureLoader().load( 'img/texture/brick.jpg' );
+var wallTexture = loadTexture( 'brick.jpg' );
 wallTexture.wrapS = THREE.RepeatWrapping;
 wallTexture.wrapT = THREE.RepeatWrapping;
 wallTexture.repeat.x = 5;
 
-var wallSmallTexture = new THREE.TextureLoader().load( 'img/texture/brick.jpg' );
+var wallSmallTexture = loadTexture( 'brick.jpg' );
 wallSmallTexture.wrapS = THREE.RepeatWrapping;
 wallSmallTexture.wrapT = THREE.RepeatWrapping;
 wallSmallTexture.repeat.x = 1.875;
 
 // Door texture
-var doorTexture = new THREE.TextureLoader().load( 'img/texture/metal.jpg' );
+var doorTexture = loadTexture( 'metal.jpg' );
 
 // Decal textures
-var decalWallDamage1Texture = new THREE.TextureLoader().load( 'img/texture/decal_wall_damage_1.png' );
-var decalWallDamage2Texture = new THREE.TextureLoader().load( 'img/texture/decal_wall_damage_2.png' );
-var decalCrack1Texture = new THREE.TextureLoader().load( 'img/texture/decal_crack_1.png' );
-var decalRust1Texture = new THREE.TextureLoader().load( 'img/texture/decal_rust_1.png' );
+var decalWallDamage1Texture = loadTexture( 'decal_wall_damage_1.png' );
+var decalWallDamage2Texture = loadTexture( 'decal_wall_damage_2.png' );
+var decalCrack1Texture = loadTexture( 'decal_crack_1.png' );
+var decalRust1Texture = loadTexture( 'decal_rust_1.png' );
 
 // Sign textures
-var signTogetherTexture = new THREE.TextureLoader().load( 'img/texture/sign_together.png' );
-var signFastTexture = new THREE.TextureLoader().load( 'img/texture/sign_fast.png' );
-var signHueTexture = new THREE.TextureLoader().load( 'img/texture/sign_hue.png' );
-var signJerseyTexture = new THREE.TextureLoader().load( 'img/texture/sign_jersey.png' );
-var signSarkTexture = new THREE.TextureLoader().load( 'img/texture/sign_sark.png' );
-var signHermTexture = new THREE.TextureLoader().load( 'img/texture/sign_herm.png' );
+var signTogetherTexture = loadTexture( 'sign_together.png' );
+var signFastTexture = loadTexture( 'sign_fast.png' );
+var signHueTexture = loadTexture( 'sign_hue.png' );
+var signJerseyTexture = loadTexture( 'sign_jersey.png' );
+var signSarkTexture = loadTexture( 'sign_sark.png' );
+var signHermTexture = loadTexture( 'sign_herm.png' );
 
 // Flag textures
-var flagJerseyTexture = new THREE.TextureLoader().load( 'img/texture/flag_jersey.png' );
-var flagSarkTexture = new THREE.TextureLoader().load( 'img/texture/flag_sark.png' );
-var flagHermTexture = new THREE.TextureLoader().load( 'img/texture/flag_herm.png' );
+var flagJerseyTexture = loadTexture( 'flag_jersey.png' );
+var flagSarkTexture = loadTexture( 'flag_sark.png' );
+var flagHermTexture = loadTexture( 'flag_herm.png' );
+
+// Rune textures
+var rune1Texture = loadTexture( 'rune_1.png' );
+var rune2Texture = loadTexture( 'rune_2.png' );
+var rune3Texture = loadTexture( 'rune_3.png' );
+var rune4Texture = loadTexture( 'rune_4.png' );
+var rune5Texture = loadTexture( 'rune_5.png' );
 
 // Audio
 var audioLoader = new THREE.AudioLoader();
